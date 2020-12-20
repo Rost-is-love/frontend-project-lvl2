@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/Rost-is-love/frontend-project-lvl2/issues"
   },
-  "homepage": "https://github.com/Rost-is-love/frontend-project-lvl2#readme"
+  "homepage": "https://github.com/Rost-is-love/frontend-project-lvl2#readme",
+  "type": "module",
+  "bin": {
+    "gendiff": "bin/gendiff.js"
+  },
+  "dependencies": {
+    "commander": "^6.2.1"
+  }
 }
