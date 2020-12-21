@@ -1,8 +1,8 @@
 {
   "name": "@hexlet/code",
   "version": "1.0.0",
-  "description": "[![Actions Status](https://github.com/Rost-is-love/frontend-project-lvl2/workflows/hexlet-check/badge.svg)](https://github.com/Rost-is-love/frontend-project-lvl2/actions)",
-  "main": "index.js",
+  "description": "Utility for сompares two configuration files and shows a difference.",
+  "main": "bin/gendiff.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,11 +16,13 @@
     "url": "https://github.com/Rost-is-love/frontend-project-lvl2/issues"
   },
   "homepage": "https://github.com/Rost-is-love/frontend-project-lvl2#readme",
+  "type": "module",
   "bin": {
     "gendiff": "bin/gendiff.js"
   },
   "dependencies": {
-    "commander": "^6.2.1"
+    "commander": "^6.2.1",
+    "lodash": "^4.17.20"
   },
   "devDependencies": {
     "eslint": "^7.16.0",
