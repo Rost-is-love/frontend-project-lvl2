@@ -1,8 +1,14 @@
-install: 
+install:
 	npm install
 
-publish: 
+publish:
 	npm publish --dry-run
 
-make lint:
+lint:
 	npx eslint .
+
+test:
+	npx -n --experimental-vm-modules jest --watch
+
+test-coverage:
+	npm test -- --coverage --coverageProvider=v8

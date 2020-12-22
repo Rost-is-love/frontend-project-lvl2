@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const getFixturePath = (filepath) => resolve(__dirname, filepath);
 
-const findDiff = (filepath1, filepath2) => {
+export const findDiff = (filepath1, filepath2) => {
   const readFile1 = fs.readFileSync(getFixturePath(filepath1), 'utf-8');
   const readFile2 = fs.readFileSync(getFixturePath(filepath2), 'utf-8');
   const obj1 = JSON.parse(readFile1);
@@ -41,6 +41,7 @@ const findDiff = (filepath1, filepath2) => {
 
   const result = `{\n${diff.join('\n')}\n}`;
   console.log(result);
+  return result;
 };
 
 const genDiff = () => {
