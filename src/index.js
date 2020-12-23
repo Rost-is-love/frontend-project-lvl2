@@ -1,19 +1,10 @@
-/* eslint-disable no-underscore-dangle */
 import program from 'commander';
-import fs from 'fs';
 import _ from 'lodash';
-import { dirname, resolve } from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const getFixturePath = (filepath) => resolve(__dirname, filepath);
+import getData from './modules/parsers.js';
 
 export const findDiff = (filepath1, filepath2) => {
-  const readFile1 = fs.readFileSync(getFixturePath(filepath1), 'utf-8');
-  const readFile2 = fs.readFileSync(getFixturePath(filepath2), 'utf-8');
-  const obj1 = JSON.parse(readFile1);
-  const obj2 = JSON.parse(readFile2);
+  const obj1 = getData(filepath1);
+  const obj2 = getData(filepath2);
   const keys = _.union(_.keys(obj1), _.keys(obj2));
 
   const diff = keys
