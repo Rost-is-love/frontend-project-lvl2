@@ -1,13 +1,13 @@
 /* eslint-disable no-underscore-dangle */
-import { test, expect } from '@jest/globals';
 import fs from 'fs';
+import { test, expect } from '@jest/globals';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
-import { findDiff } from '../src/index.js';
+import { findDiff } from '../src/diff.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const getFixturePath = (filepath) => join(__dirname, '..', '__tests__', '__fixtures__', filepath);
+const getFixturePath = (filepath) => join(__dirname, '..', '__fixtures__', filepath);
 
 test('flat json', () => {
   const path1 = getFixturePath('flatjson1.json');
