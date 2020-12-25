@@ -14,6 +14,7 @@ const yamlPath1 = getFixturePath('flatyaml1.yml');
 const yamlPath2 = getFixturePath('flatyaml2.yml');
 const expectedStylish = fs.readFileSync(getFixturePath('expected-stylish.txt'), 'utf-8');
 const expectedPlain = fs.readFileSync(getFixturePath('expected-plain.txt'), 'utf-8');
+const expectedJson = fs.readFileSync(getFixturePath('expected-json.txt'), 'utf-8');
 
 test('json to stylish', () => {
   const diff = genDiff(jsonPath1, jsonPath2, 'stylish');
@@ -39,4 +40,14 @@ test('yaml to plain', () => {
   expect(expectedPlain.slice(0, 10)).toEqual(diff.slice(0, 10));
   expect(expectedPlain.slice(-20)).toEqual(diff.slice(-20));
   expect(typeof diff).toEqual('string');
+});
+
+test('json to json', () => {
+  const diff = genDiff(jsonPath1, jsonPath2, 'json');
+  expect(expectedJson).toEqual(diff);
+});
+
+test('yaml to json', () => {
+  const diff = genDiff(yamlPath1, yamlPath2, 'json');
+  expect(expectedJson).toEqual(diff);
 });
