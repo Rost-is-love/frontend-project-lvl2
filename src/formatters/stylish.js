@@ -22,22 +22,16 @@ const format = (data1, data2, depth = 4, sort = true) => {
 
   const diff = keys.reduce((acc, key) => {
     if (!_.has(data1, key)) {
-      if (_.isObject(data2, key)) {
-        return [
-          ...acc,
-          `${currentIndent}${plusSign} ${key}: ${format(data2[key], {}, depth + 4, false)}`,
-        ];
-      }
-      return [...acc, `${currentIndent}  ${key}: ${format(data2[key])}`];
+      return [
+        ...acc,
+        `${currentIndent}${plusSign} ${key}: ${format(data2[key], {}, depth + 4, false)}`,
+      ];
     }
     if (!_.has(data2, key)) {
-      if (_.isObject(data1, key)) {
-        return [
-          ...acc,
-          `${currentIndent}${minusSign} ${key}: ${format(data1[key], {}, depth + 4, false)}`,
-        ];
-      }
-      return [...acc, `${currentIndent}  ${key}: ${format(data1[key])}`];
+      return [
+        ...acc,
+        `${currentIndent}${minusSign} ${key}: ${format(data1[key], {}, depth + 4, false)}`,
+      ];
     }
     if (_.isObject(data1[key]) && _.isObject(data2[key])) {
       return [...acc, `${currentIndent}  ${key}: ${format(data1[key], data2[key], depth + 4)}`];
