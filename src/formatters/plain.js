@@ -5,7 +5,7 @@ const getValue = (value) => (value === null || typeof value === 'boolean' ? valu
 const format = (data1, data2, path = '') => {
   const keys = _.union(_.keys(data1), _.keys(data2)).sort();
 
-  const diff = keys
+  return keys
     .reduce((acc, key) => {
       if (!_.has(data1, key)) {
         if (_.isObject(data2[key])) {
@@ -42,7 +42,6 @@ const format = (data1, data2, path = '') => {
       return acc;
     }, [])
     .join('\n');
-  return diff;
 };
 
 export default format;
