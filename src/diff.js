@@ -1,7 +1,7 @@
 import getData from './modules/parsers.js';
 import getFormat from './formatters/index.js';
 
-const findDiff = (filepath1, filepath2, format) => {
+const genDiff = (filepath1, filepath2, format) => {
   const obj1 = getData(filepath1);
   const obj2 = getData(filepath2);
 
@@ -9,4 +9,4 @@ const findDiff = (filepath1, filepath2, format) => {
   return result;
 };
 
-export default findDiff;
+export default genDiff;
