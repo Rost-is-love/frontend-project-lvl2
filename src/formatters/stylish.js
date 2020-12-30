@@ -4,7 +4,7 @@ const format = (data1, data2, depth = 4, sort = true) => {
   if (data1 === null) {
     return data1;
   }
-  if (!_.isObject(data1)) {
+  if (!_.isPlainObject(data1)) {
     return data1.toString();
   }
 
