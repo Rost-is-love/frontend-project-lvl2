@@ -5,7 +5,7 @@ const getDiff = (data1, data2) => {
 
   return keys.map((key) => {
     if (_.isPlainObject(data1[key]) && _.isPlainObject(data2[key])) {
-      return { key, status: 'nested', children: getCurData(data1[key], data2[key]) };
+      return { key, status: 'nested', children: getDiff(data1[key], data2[key]) };
     }
     if (data1[key] === data2[key]) {
       return { key, status: 'outdated', value: data1[key] };
@@ -20,4 +20,4 @@ const getDiff = (data1, data2) => {
   });
 };
 
-export default getDiff();
+export default getDiff;

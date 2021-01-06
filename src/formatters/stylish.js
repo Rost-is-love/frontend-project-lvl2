@@ -1,52 +1,66 @@
 import _ from 'lodash';
+import getDiff from '../differ.js';
 
-const format = (data1, data2, depth = 4, sort = true) => {
-  if (data1 === null) {
-    return data1;
-  }
-  if (!_.isPlainObject(data1)) {
-    return data1.toString();
-  }
+const defaultPrefix = '    ';
 
-  let plusSign = ' ';
-  let minusSign = ' ';
-  const keys = _.union(_.keys(data1), _.keys(data2));
-  if (sort === true) {
-    keys.sort();
-    plusSign = '+';
-    minusSign = '-';
-  }
-  const replacer = ' ';
-  const currentIndent = replacer.repeat(depth - 2);
-  const bracketIndent = replacer.repeat(depth - 4);
+const prefixes = {
+  outdated: '    ',
+  removed: '  - ',
+  added: '  + ',
+};
 
-  const diff = keys.reduce((acc, key) => {
-    if (!_.has(data1, key)) {
-      return [
-        ...acc,
-        `${currentIndent}${plusSign} ${key}: ${format(data2[key], {}, depth + 4, false)}`,
-      ];
-    }
-    if (!_.has(data2, key)) {
-      return [
-        ...acc,
-        `${currentIndent}${minusSign} ${key}: ${format(data1[key], {}, depth + 4, false)}`,
-      ];
-    }
-    if (_.isObject(data1[key]) && _.isObject(data2[key])) {
-      return [...acc, `${currentIndent}  ${key}: ${format(data1[key], data2[key], depth + 4)}`];
-    }
-    if (data1[key] === data2[key]) {
-      return [...acc, `${currentIndent}  ${key}: ${format(data1[key])}`];
-    }
+const objToString = (obj, prefix, depth, value = 'value') => {
+  const keys = Object.keys(obj);
+  const currentIndent = defaultPrefix.repeat(depth);
+  const bracketIndent = defaultPrefix.repeat(depth);
+
+  const result = keys.flatMap((key) => {
+    return _.isPlainObject(obj[key])
+      ? [
+          `${currentIndent}${key}: {`,
+          objToString(obj[key], prefix, depth + 1).join('\n'),
+          `${bracketIndent}}`,
+        ].join('\n')
+      : `${currentIndent}${key}: ${obj[key]}`;
+  });
+  return result;
+};
+
+const buildRows = (obj, prefix, depth, value = 'value') => {
+  const currentIndent = `${defaultPrefix.repeat(depth - 1)}${prefix}`;
+  const bracketIndent = defaultPrefix.repeat(depth);
+  return _.isPlainObject(obj[value])
+    ? [
+        `${currentIndent}${obj.key}: {`,
+        objToString(obj[value], prefix, depth + 1).join('\n'),
+        `${bracketIndent}}`,
+      ].join('\n')
+    : `${currentIndent}${obj.key}: ${obj[value]}`;
+};
+
+const getFunc = {
+  outdated: (obj, depth) => buildRows(obj, prefixes.outdated, depth),
+  updated: (obj, depth) => {
     return [
-      ...acc,
-      `${currentIndent}${minusSign} ${key}: ${format(data1[key], {}, depth + 4, false)}`,
-      `${currentIndent}${plusSign} ${key}: ${format(data2[key], {}, depth + 4, false)}`,
+      buildRows(obj, prefixes.removed, depth, 'oldValue'),
+      buildRows(obj, prefixes.added, depth, 'curValue'),
     ];
-  }, []);
+  },
+  removed: (obj, depth) => buildRows(obj, prefixes.removed, depth),
+  added: (obj, depth) => buildRows(obj, prefixes.added, depth),
+  nested: (obj, depth) => {
+    return [
+      `${defaultPrefix.repeat(depth)}${obj.key}: {`,
+      obj.children.flatMap((child) => getFunc[child.status](child, depth + 1)).join('\n'),
+      `${defaultPrefix.repeat(depth)}}`,
+    ];
+  },
+};
 
-  return ['{', ...diff, `${bracketIndent}}`].join('\n');
+const format = (data1, data2) => {
+  const diff = getDiff(data1, data2);
+
+  return ['{', ...diff.flatMap((obj) => getFunc[obj.status](obj, 1)), '}'].join('\n');
 };
 
 export default format;

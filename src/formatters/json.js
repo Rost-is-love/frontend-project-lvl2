@@ -1,6 +1,10 @@
 import _ from 'lodash';
 
-const getCurData = (data1, data2, key) => {
+const getCurData = (data1, data2) => {
+  /* if (_.isPlainObject(data1[key]) && _.isPlainObject(data2[key])) {
+    return ['nested', 'nested', 'outdated', true];
+  }
+
   if (!_.has(data1, key)) {
     if (_.isObject(data2[key])) {
       return ['nested', null, 'added', true];
@@ -19,16 +23,13 @@ const getCurData = (data1, data2, key) => {
   if (!_.isObject(data1[key]) && !_.isObject(data2[key])) {
     return [data2[key], data1[key], 'updated', false];
   }
-  if (_.isObject(data1[key]) && _.isObject(data2[key])) {
-    return ['nested', 'nested', 'outdated', true];
-  }
   if (_.isObject(data1[key])) {
     return [data2[key], 'nested', 'updated', false];
   }
-  return ['nested', data1[key], 'updated', true];
+  return ['nested', data1[key], 'updated', true]; */
 };
 
-const format = (obj1, obj2) => {
+/* const format = (obj1, obj2) => {
   const iter = (data1, data2) => {
     const keys = _.union(_.keys(data1), _.keys(data2)).sort();
 
@@ -54,7 +55,8 @@ const format = (obj1, obj2) => {
     return diff;
   };
   const result = iter(obj1, obj2);
-  return JSON.stringify(result);
-};
+  // return JSON.stringify(result);
+  return result;
+}; */
 
-export default format;
+export default getCurData;
