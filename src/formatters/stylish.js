@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import getDiff from '../differ.js';
 
 const defaultPrefix = '    ';
 
@@ -9,7 +8,7 @@ const prefixes = {
   added: '  + ',
 };
 
-const objToString = (obj, prefix, depth, value = 'value') => {
+const objToString = (obj, prefix, depth) => {
   const keys = Object.keys(obj);
   const currentIndent = defaultPrefix.repeat(depth);
   const bracketIndent = defaultPrefix.repeat(depth);
@@ -57,10 +56,7 @@ const getFunc = {
   },
 };
 
-const format = (data1, data2) => {
-  const diff = getDiff(data1, data2);
-
-  return ['{', ...diff.flatMap((obj) => getFunc[obj.status](obj, 1)), '}'].join('\n');
-};
+const format = (data) =>
+  ['{', ...data.flatMap((obj) => getFunc[obj.status](obj, 1)), '}'].join('\n');
 
 export default format;

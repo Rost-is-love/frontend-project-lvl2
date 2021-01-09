@@ -2,15 +2,15 @@ import formatStylish from './stylish.js';
 import formatPlain from './plain.js';
 import formatJson from './json.js';
 
-const getFormat = (data1, data2, format) => {
+const getFormat = (data, format) => {
   if (format === 'stylish') {
-    return formatStylish(data1, data2);
+    return formatStylish(data);
   }
   if (format === 'plain') {
-    return formatPlain(data1, data2);
+    return formatPlain(data);
   }
   if (format === 'json') {
-    return formatJson(data1, data2);
+    return formatJson(data);
   }
   throw new Error('Вы указали несуществующий формат');
 };
