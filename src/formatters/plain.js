@@ -15,15 +15,13 @@ const getFunc = {
   added: (path, obj) => `Property '${path}' was added with value: ${getValue(obj.value)}`,
   nested: (path, obj) => {
     const filterChildren = obj.children.filter((child) => child.status !== 'outdated');
-    return [
-      ...filterChildren.flatMap((obj) => getFunc[obj.status](`${path}.${obj.key}`, obj)),
-    ].join('\n');
+    return filterChildren.flatMap((obj) => getFunc[obj.status](`${path}.${obj.key}`, obj));
   },
 };
 
 const format = (data) => {
   const filterChildren = data.filter((obj) => obj.status !== 'outdated');
-  return [...filterChildren.flatMap((obj) => getFunc[obj.status](obj.key, obj))].join('\n');
+  return filterChildren.flatMap((obj) => getFunc[obj.status](obj.key, obj)).join('\n');
 };
 
 export default format;
