@@ -1,11 +1,14 @@
 import _ from 'lodash';
 
-const getValue = (value) =>
-  _.isPlainObject(value)
-    ? '[complex value]'
-    : value === null || typeof value === 'boolean'
-    ? value
-    : `'${value}'`;
+const getValue = (value) => {
+  if (_.isPlainObject(value)) {
+    return '[complex value]';
+  }
+  if (value === null || typeof value === 'boolean') {
+    return value;
+  }
+  return `'${value}'`;
+};
 
 const getFunc = {
   outdated: () => '',
