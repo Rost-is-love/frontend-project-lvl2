@@ -13,12 +13,13 @@ const getValue = (value) => {
 const getFunc = {
   outdated: () => '',
   updated: (path, obj) =>
+    // eslint-disable-next-line implicit-arrow-linebreak
     `Property '${path}' was updated. From ${getValue(obj.oldValue)} to ${getValue(obj.curValue)}`,
   removed: (path) => `Property '${path}' was removed`,
   added: (path, obj) => `Property '${path}' was added with value: ${getValue(obj.value)}`,
   nested: (path, obj) => {
     const filterChildren = obj.children.filter((child) => child.status !== 'outdated');
-    return filterChildren.flatMap((obj) => getFunc[obj.status](`${path}.${obj.key}`, obj));
+    return filterChildren.flatMap((child) => getFunc[child.status](`${path}.${child.key}`, child));
   },
 };
 
