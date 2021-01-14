@@ -11,7 +11,9 @@ const getDiff = (data1, data2) => {
       return { key, status: 'outdated', value: data1[key] };
     }
     if (_.has(data1, key) && _.has(data2, key)) {
-      return { key, status: 'updated', curValue: data2[key], oldValue: data1[key] };
+      return {
+        key, status: 'updated', curValue: data2[key], oldValue: data1[key],
+      };
     }
 
     return _.has(data1, key)
