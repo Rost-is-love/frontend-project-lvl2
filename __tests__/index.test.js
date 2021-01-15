@@ -24,7 +24,7 @@ describe.each([
   [yamlPath1, yamlPath2, expectedPlain, 'plain'],
   [jsonPath1, jsonPath2, expectedJson, 'json'],
   [yamlPath1, yamlPath2, expectedJson, 'json'],
-])('file1:\n%s\n file2:\n%s\n\n', (file1, file2, expected, format) => {
+])('file1:\n%s\n   file2:\n%s\n\n', (file1, file2, expected, format) => {
   test('compare files', () => {
     const result = genDiff(file1, file2, format);
     expect(result).toEqual(expected);
