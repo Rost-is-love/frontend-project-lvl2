@@ -12,17 +12,16 @@ const buildFilePath = (filepath) => {
 };
 
 const getData = (filepath) => {
-  let parse;
   const format = extname(filepath);
   const data = fs.readFileSync(buildFilePath(filepath), 'utf-8');
   if (format === '' || format === '.json') {
-    parse = JSON.parse;
-  } else if (format === '.yml') {
-    parse = yaml.safeLoad;
-  } else {
-    throw new Error('Программа работает только с форматами JSON и yaml');
+    return JSON.parse(data);
   }
-  return parse(data);
+  if (format === '.yml') {
+    return yaml.safeLoad(data);
+  }
+
+  throw new Error('Программа работает только с форматами JSON и yaml');
 };
 
 export default getData;
