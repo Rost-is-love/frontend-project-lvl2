@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 const getDiff = (data1, data2) => {
-  const keys = _.union(_.keys(data1), _.keys(data2)).sort();
+  const keys = _.sortBy(_.union(_.keys(data1), _.keys(data2)));
 
   return keys.map((key) => {
     if (_.isPlainObject(data1[key]) && _.isPlainObject(data2[key])) {
