@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 const buildFilePath = (filepath) => {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
-  const getFixturePath = (path) => resolve(__dirname, path);
+  const getFixturePath = (path) => resolve(__dirname, path).toString();
   return getFixturePath(filepath);
 };
 
