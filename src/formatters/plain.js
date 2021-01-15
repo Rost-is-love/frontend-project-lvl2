@@ -4,7 +4,7 @@ const getValue = (value) => {
   if (_.isPlainObject(value)) {
     return '[complex value]';
   }
-  if (value === null || typeof value === 'boolean') {
+  if (value === null || typeof value === 'boolean' || typeof value === 'number') {
     return value;
   }
   return `'${value}'`;
