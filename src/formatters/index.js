@@ -12,7 +12,7 @@ const getFormat = (data, format) => {
   if (format === 'json') {
     return formatJson(data);
   }
-  throw new Error('Вы указали несуществующий формат');
+  throw new Error(`Unknown format: ${format}`);
 };
 
 export default getFormat;
