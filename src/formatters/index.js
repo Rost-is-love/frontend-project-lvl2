@@ -3,7 +3,7 @@ import formatPlain from './plain.js';
 import formatJson from './json.js';
 
 const getFormat = (data, format) => {
-  if (format === 'stylish') {
+  if (format === 'stylish' || format === undefined) {
     return formatStylish(data);
   }
   if (format === 'plain') {
