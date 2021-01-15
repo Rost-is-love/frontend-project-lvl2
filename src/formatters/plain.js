@@ -4,10 +4,10 @@ const getValue = (value) => {
   if (_.isPlainObject(value)) {
     return '[complex value]';
   }
-  if (value === null || typeof value === 'boolean' || typeof value === 'number') {
-    return value;
+  if (_.isString(value)) {
+    return `'${value}'`;
   }
-  return `'${value}'`;
+  return value;
 };
 
 const getFunc = {
