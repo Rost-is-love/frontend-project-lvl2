@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import fs from 'fs';
 import yaml from 'js-yaml';
 import { dirname, resolve, extname } from 'path';
