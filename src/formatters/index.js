@@ -1,6 +1,5 @@
 import formatStylish from './stylish.js';
 import formatPlain from './plain.js';
-import formatJson from './json.js';
 
 export default (data, format) => {
   if (format === 'stylish' || format === undefined) {
@@ -10,7 +9,7 @@ export default (data, format) => {
     return formatPlain(data);
   }
   if (format === 'json') {
-    return formatJson(data);
+    return JSON.stringify(data);
   }
   throw new Error(`Unknown format: ${format}`);
 };
