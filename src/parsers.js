@@ -1,18 +1,6 @@
-import fs from 'fs';
 import yaml from 'js-yaml';
-import { dirname, resolve, extname } from 'path';
-import { fileURLToPath } from 'url';
 
-const buildFilePath = (filepath) => {
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = dirname(__filename);
-  const getFixturePath = (path) => resolve(__dirname, path).toString();
-  return getFixturePath(filepath);
-};
-
-const getData = (filepath) => {
-  const format = extname(filepath);
-  const data = fs.readFileSync(buildFilePath(filepath), 'utf-8');
+export default (data, format) => {
   if (format === '' || format === '.json') {
     return JSON.parse(data);
   }
@@ -22,5 +10,3 @@ const getData = (filepath) => {
 
   throw new Error('The calculator only works with JSON and yaml formats');
 };
-
-export default getData;
