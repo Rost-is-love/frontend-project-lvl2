@@ -1,4 +1,4 @@
-import getData from './modules/parsers.js';
+import getData from './parsers.js';
 import getFormat from './formatters/index.js';
 import getDiff from './differ.js';
 
