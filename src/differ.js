@@ -8,7 +8,7 @@ const getDiff = (data1, data2) => {
       return { key, status: 'nested', children: getDiff(data1[key], data2[key]) };
     }
     if (data1[key] === data2[key]) {
-      return { key, status: 'outdated', value: data1[key] };
+      return { key, status: 'unchanged', value: data1[key] };
     }
     if (_.has(data1, key) && _.has(data2, key)) {
       return {

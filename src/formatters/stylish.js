@@ -3,7 +3,7 @@ import _ from 'lodash';
 const defaultPrefix = '    ';
 
 const prefixes = {
-  outdated: '    ',
+  unchanged: '    ',
   removed: '  - ',
   added: '  + ',
 };
@@ -36,7 +36,7 @@ const buildRows = (obj, prefix, depth, value = 'value') => {
 };
 
 const getFunc = {
-  outdated: (obj, depth) => buildRows(obj, prefixes.outdated, depth),
+  unchanged: (obj, depth) => buildRows(obj, prefixes.unchanged, depth),
   updated: (obj, depth) => [
     buildRows(obj, prefixes.removed, depth, 'oldValue'),
     buildRows(obj, prefixes.added, depth, 'curValue'),
