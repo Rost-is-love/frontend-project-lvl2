@@ -8,24 +8,22 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const getFixturePath = (filepath) => join(__dirname, '..', '__fixtures__', filepath);
 
-const jsonPath1 = getFixturePath('json1.json');
-const jsonPath2 = getFixturePath('json2.json');
-const yamlPath1 = getFixturePath('yaml1.yml');
-const yamlPath2 = getFixturePath('yaml2.yml');
 const expectedStylish = fs.readFileSync(getFixturePath('expected-stylish.txt'), 'utf-8');
 const expectedPlain = fs.readFileSync(getFixturePath('expected-plain.txt'), 'utf-8');
 const expectedJson = fs.readFileSync(getFixturePath('expected-json.txt'), 'utf-8');
 
 describe.each([
-  [jsonPath1, jsonPath2, expectedStylish, 'stylish'],
-  [yamlPath1, yamlPath2, expectedStylish, 'stylish'],
-  [jsonPath1, jsonPath2, expectedPlain, 'plain'],
-  [yamlPath1, yamlPath2, expectedPlain, 'plain'],
-  [jsonPath1, jsonPath2, expectedJson, 'json'],
-  [yamlPath1, yamlPath2, expectedJson, 'json'],
-])('file1:\n%s\n  file2:\n%s', (file1, file2, expected, format) => {
+  [getFixturePath('json1.json'), getFixturePath('json2.json'), expectedStylish, expectedPlain, expectedJson],
+  [getFixturePath('yaml1.yml'), getFixturePath('yaml2.yml'), expectedStylish, expectedPlain, expectedJson],
+])('file1:\n%s\n  file2:\n%s', (file1, file2, expected1, expected2, expected3) => {
   test('compare files', () => {
-    const result = genDiff(file1, file2, format);
-    expect(result).toEqual(expected);
+    const resultStylish = genDiff(file1, file2, 'stylish');
+    const resultPlain = genDiff(file1, file2, 'plain');
+    const resultJson = genDiff(file1, file2, 'json');
+    const resultDefault = genDiff(file1, file2);
+    expect(resultStylish).toEqual(expected1);
+    expect(resultPlain).toEqual(expected2);
+    expect(resultJson).toEqual(expected3);
+    expect(resultDefault).toEqual(expected1);
   });
 });
