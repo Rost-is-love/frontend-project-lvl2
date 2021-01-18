@@ -20,7 +20,7 @@ const getData = (filepath) => {
     return yaml.safeLoad(data);
   }
 
-  throw new Error('Программа работает только с форматами JSON и yaml');
+  throw new Error('The calculator only works with JSON and yaml formats');
 };
 
 export default getData;
