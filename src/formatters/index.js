@@ -2,14 +2,14 @@ import formatStylish from './stylish.js';
 import formatPlain from './plain.js';
 
 export default (data, format) => {
-  if (format === 'stylish' || format === undefined) {
-    return formatStylish(data);
+  switch (format) {
+    case 'stylish':
+      return formatStylish(data);
+    case 'plain':
+      return formatPlain(data);
+    case 'json':
+      return JSON.stringify(data);
+    default:
+      throw new Error(`Unknown format: ${format}`);
   }
-  if (format === 'plain') {
-    return formatPlain(data);
-  }
-  if (format === 'json') {
-    return JSON.stringify(data);
-  }
-  throw new Error(`Unknown format: ${format}`);
 };
