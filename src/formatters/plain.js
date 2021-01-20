@@ -11,21 +11,15 @@ const getValue = (value) => {
 };
 
 const map = {
-  unchanged: () => '',
+  unchanged: () => [],
   updated: (path, obj) =>
     // eslint-disable-next-line implicit-arrow-linebreak
     `Property '${path}' was updated. From ${getValue(obj.oldValue)} to ${getValue(obj.newValue)}`,
   removed: (path) => `Property '${path}' was removed`,
   added: (path, obj) => `Property '${path}' was added with value: ${getValue(obj.value)}`,
-  nested: (path, obj) => {
-    const filterChildren = obj.children.filter((child) => child.status !== 'unchanged');
-    return filterChildren.flatMap((child) => map[child.status](`${path}.${child.key}`, child));
-  },
+  nested: (path, obj) => obj.children.flatMap((child) => map[child.status](`${path}.${child.key}`, child)),
 };
 
-const format = (data) => {
-  const filterChildren = data.filter((obj) => obj.status !== 'unchanged');
-  return filterChildren.flatMap((obj) => map[obj.status](obj.key, obj)).join('\n');
-};
+const format = (data) => data.flatMap((obj) => map[obj.status](obj.key, obj)).join('\n');
 
 export default format;
