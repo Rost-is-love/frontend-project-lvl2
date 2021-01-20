@@ -39,7 +39,7 @@ const map = {
   unchanged: (obj, depth) => buildRows(obj, prefixes.unchanged, depth),
   updated: (obj, depth) => [
     buildRows(obj, prefixes.removed, depth, 'oldValue'),
-    buildRows(obj, prefixes.added, depth, 'curValue'),
+    buildRows(obj, prefixes.added, depth, 'newValue'),
   ],
   removed: (obj, depth) => buildRows(obj, prefixes.removed, depth),
   added: (obj, depth) => buildRows(obj, prefixes.added, depth),

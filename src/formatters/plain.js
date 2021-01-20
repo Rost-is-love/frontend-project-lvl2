@@ -14,7 +14,7 @@ const map = {
   unchanged: () => '',
   updated: (path, obj) =>
     // eslint-disable-next-line implicit-arrow-linebreak
-    `Property '${path}' was updated. From ${getValue(obj.oldValue)} to ${getValue(obj.curValue)}`,
+    `Property '${path}' was updated. From ${getValue(obj.oldValue)} to ${getValue(obj.newValue)}`,
   removed: (path) => `Property '${path}' was removed`,
   added: (path, obj) => `Property '${path}' was added with value: ${getValue(obj.value)}`,
   nested: (path, obj) => {

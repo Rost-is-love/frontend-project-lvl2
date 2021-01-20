@@ -12,7 +12,7 @@ const getDiff = (data1, data2) => {
     }
     if (_.has(data1, key) && _.has(data2, key)) {
       return {
-        key, status: 'updated', curValue: data2[key], oldValue: data1[key],
+        key, status: 'updated', newValue: data2[key], oldValue: data1[key],
       };
     }
 
