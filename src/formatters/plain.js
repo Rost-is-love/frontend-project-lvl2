@@ -10,7 +10,7 @@ const getValue = (value) => {
   return value;
 };
 
-const getFunc = {
+const map = {
   unchanged: () => '',
   updated: (path, obj) =>
     // eslint-disable-next-line implicit-arrow-linebreak
@@ -19,13 +19,13 @@ const getFunc = {
   added: (path, obj) => `Property '${path}' was added with value: ${getValue(obj.value)}`,
   nested: (path, obj) => {
     const filterChildren = obj.children.filter((child) => child.status !== 'unchanged');
-    return filterChildren.flatMap((child) => getFunc[child.status](`${path}.${child.key}`, child));
+    return filterChildren.flatMap((child) => map[child.status](`${path}.${child.key}`, child));
   },
 };
 
 const format = (data) => {
   const filterChildren = data.filter((obj) => obj.status !== 'unchanged');
-  return filterChildren.flatMap((obj) => getFunc[obj.status](obj.key, obj)).join('\n');
+  return filterChildren.flatMap((obj) => map[obj.status](obj.key, obj)).join('\n');
 };
 
 export default format;

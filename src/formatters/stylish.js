@@ -35,7 +35,7 @@ const buildRows = (obj, prefix, depth, value = 'value') => {
     : `${currentIndent}${obj.key}: ${obj[value]}`;
 };
 
-const getFunc = {
+const map = {
   unchanged: (obj, depth) => buildRows(obj, prefixes.unchanged, depth),
   updated: (obj, depth) => [
     buildRows(obj, prefixes.removed, depth, 'oldValue'),
@@ -45,11 +45,11 @@ const getFunc = {
   added: (obj, depth) => buildRows(obj, prefixes.added, depth),
   nested: (obj, depth) => [
     `${defaultPrefix.repeat(depth)}${obj.key}: {`,
-    obj.children.flatMap((child) => getFunc[child.status](child, depth + 1)).join('\n'),
+    obj.children.flatMap((child) => map[child.status](child, depth + 1)).join('\n'),
     `${defaultPrefix.repeat(depth)}}`,
   ],
 };
 
-const format = (data) => ['{', ...data.flatMap((obj) => getFunc[obj.status](obj, 1)), '}'].join('\n');
+const format = (data) => ['{', ...data.flatMap((obj) => map[obj.status](obj, 1)), '}'].join('\n');
 
 export default format;
