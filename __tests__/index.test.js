@@ -14,7 +14,7 @@ const expectedJson = fs.readFileSync(getFixturePath('expected-json.txt'), 'utf-8
 
 describe.each([
   ['json', 'yml'],
-])('file1:\n%s\n  file2:\n%s', (format) => {
+])('extension1:\n%s\n  extension2:\n%s', (format) => {
   test('compare files', () => {
     const resultStylish = genDiff(getFixturePath(`file1.${format}`), getFixturePath(`file2.${format}`), 'stylish');
     const resultPlain = genDiff(getFixturePath(`file1.${format}`), getFixturePath(`file2.${format}`), 'plain');
