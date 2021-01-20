@@ -15,7 +15,7 @@ const buildFilePath = (filepath) => {
 const getExt = (filepath) => extname(filepath);
 const getData = (filepath) => fs.readFileSync(buildFilePath(filepath), 'utf-8');
 
-const genDiff = (filepath1, filepath2, format) => {
+const genDiff = (filepath1, filepath2, format = 'stylish') => {
   const obj1 = parseData(getData(filepath1), getExt(filepath1));
   const obj2 = parseData(getData(filepath2), getExt(filepath2));
   const diff = getDiff(obj1, obj2);
