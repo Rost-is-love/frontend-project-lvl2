@@ -12,16 +12,15 @@ const buildFilePath = (filepath) => {
   return getFixturePath(filepath);
 };
 
-const getExt = (filepath) => extname(filepath);
 const getData = (filepath) => fs.readFileSync(buildFilePath(filepath), 'utf-8');
 const getDataType = (filepath) => {
-  const extension = getExt(filepath);
+  const extension = extname(filepath).slice(1);
   switch (extension) {
-    case '.json':
+    case 'json':
     case '':
       return 'json';
-    case '.yml':
-    case '.yaml':
+    case 'yml':
+    case 'yaml':
       return 'yml';
     default:
       throw new Error('The calculator only works with JSON and yaml formats');
