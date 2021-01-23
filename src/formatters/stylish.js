@@ -23,33 +23,33 @@ const objToString = (obj, prefix, depth) => {
   return result;
 };
 
-const buildRows = (obj, prefix, depth, value = 'value') => {
+const buildRows = (node, prefix, depth, value = 'value') => {
   const currentIndent = `${defaultPrefix.repeat(depth - 1)}${prefix}`;
   const bracketIndent = defaultPrefix.repeat(depth);
-  return _.isPlainObject(obj[value])
+  return _.isPlainObject(node[value])
     ? [
-      `${currentIndent}${obj.key}: {`,
-      objToString(obj[value], prefix, depth + 1).join('\n'),
+      `${currentIndent}${node.key}: {`,
+      objToString(node[value], prefix, depth + 1).join('\n'),
       `${bracketIndent}}`,
     ].join('\n')
-    : `${currentIndent}${obj.key}: ${obj[value]}`;
+    : `${currentIndent}${node.key}: ${node[value]}`;
 };
 
 const map = {
-  unchanged: (obj, depth) => buildRows(obj, prefixes.unchanged, depth),
-  updated: (obj, depth) => [
-    buildRows(obj, prefixes.removed, depth, 'oldValue'),
-    buildRows(obj, prefixes.added, depth, 'newValue'),
+  unchanged: (node, depth) => buildRows(node, prefixes.unchanged, depth),
+  updated: (node, depth) => [
+    buildRows(node, prefixes.removed, depth, 'oldValue'),
+    buildRows(node, prefixes.added, depth, 'newValue'),
   ],
-  removed: (obj, depth) => buildRows(obj, prefixes.removed, depth),
-  added: (obj, depth) => buildRows(obj, prefixes.added, depth),
-  nested: (obj, depth) => [
-    `${defaultPrefix.repeat(depth)}${obj.key}: {`,
-    obj.children.flatMap((child) => map[child.status](child, depth + 1)).join('\n'),
+  removed: (node, depth) => buildRows(node, prefixes.removed, depth),
+  added: (node, depth) => buildRows(node, prefixes.added, depth),
+  nested: (node, depth) => [
+    `${defaultPrefix.repeat(depth)}${node.key}: {`,
+    node.children.flatMap((child) => map[child.status](child, depth + 1)).join('\n'),
     `${defaultPrefix.repeat(depth)}}`,
   ],
 };
 
-const format = (data) => ['{', ...data.flatMap((obj) => map[obj.status](obj, 1)), '}'].join('\n');
+const format = (data) => ['{', ...data.flatMap((node) => map[node.status](node, 1)), '}'].join('\n');
 
 export default format;
