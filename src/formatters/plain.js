@@ -20,6 +20,6 @@ const map = {
   nested: (path, node) => node.children.flatMap((child) => map[child.status](`${path}.${child.key}`, child)),
 };
 
-const format = (data) => data.flatMap((node) => map[node.status](node.key, node)).join('\n');
+const format = (ast) => ast.flatMap((node) => map[node.status](node.key, node)).join('\n');
 
 export default format;
