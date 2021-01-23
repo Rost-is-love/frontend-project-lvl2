@@ -50,6 +50,9 @@ const map = {
   ],
 };
 
-const format = (ast) => ['{', ...ast.flatMap((node) => map[node.status](node, 1)), '}'].join('\n');
+const format = (ast) => {
+  const rows = ast.flatMap((node) => map[node.status](node, 1));
+  return ['{', ...rows, '}'].join('\n');
+};
 
 export default format;
