@@ -1,53 +1,32 @@
 import _ from 'lodash';
 
-const defaultPrefix = '    ';
+const defaultPrefix = 4;
 
-const prefixes = {
-  unchanged: '    ',
-  removed: '  - ',
-  added: '  + ',
-};
+const buildIndent = (depth) => `${' '.repeat(depth * defaultPrefix - 2)}`;
 
-const objToString = (obj, prefix, depth) => {
-  const keys = Object.keys(obj);
-  const currentIndent = defaultPrefix.repeat(depth);
-  const bracketIndent = defaultPrefix.repeat(depth);
+const stringify = (curValue, depth, map) => {
+  if (!_.isPlainObject(curValue)) {
+    return curValue;
+  }
 
-  const result = keys.flatMap((key) => ((_.isPlainObject(obj[key]))
-    ? [
-      `${currentIndent}${key}: {`,
-      objToString(obj[key], prefix, depth + 1).join('\n'),
-      `${bracketIndent}}`,
-    ].join('\n')
-    : `${currentIndent}${key}: ${obj[key]}`));
-  return result;
-};
+  const keys = Object.entries(curValue)
+    .map(([key, value]) => map.unchanged({ key, value }, depth + 1));
 
-const buildRows = (node, prefix, depth, value = 'value') => {
-  const currentIndent = `${defaultPrefix.repeat(depth - 1)}${prefix}`;
-  const bracketIndent = defaultPrefix.repeat(depth);
-  return _.isPlainObject(node[value])
-    ? [
-      `${currentIndent}${node.key}: {`,
-      objToString(node[value], prefix, depth + 1).join('\n'),
-      `${bracketIndent}}`,
-    ].join('\n')
-    : `${currentIndent}${node.key}: ${node[value]}`;
+  return ['{', ...keys, `${buildIndent(depth)}  }`].join('\n');
 };
 
 const map = {
-  unchanged: (node, depth) => buildRows(node, prefixes.unchanged, depth),
+  unchanged: (node, depth) => `${buildIndent(depth)}  ${node.key}: ${stringify(node.value, depth, map)}`,
   updated: (node, depth) => [
-    buildRows(node, prefixes.removed, depth, 'oldValue'),
-    buildRows(node, prefixes.added, depth, 'newValue'),
+    `${buildIndent(depth)}- ${node.key}: ${stringify(node.oldValue, depth, map)}`,
+    `${buildIndent(depth)}+ ${node.key}: ${stringify(node.newValue, depth, map)}`,
   ],
-  removed: (node, depth) => buildRows(node, prefixes.removed, depth),
-  added: (node, depth) => buildRows(node, prefixes.added, depth),
-  nested: (node, depth) => [
-    `${defaultPrefix.repeat(depth)}${node.key}: {`,
-    node.children.flatMap((child) => map[child.status](child, depth + 1)).join('\n'),
-    `${defaultPrefix.repeat(depth)}}`,
-  ],
+  removed: (node, depth) => `${buildIndent(depth)}- ${node.key}: ${stringify(node.value, depth, map)}`,
+  added: (node, depth) => `${buildIndent(depth)}+ ${node.key}: ${stringify(node.value, depth, map)}`,
+  nested: (node, depth) => {
+    const body = node.children.flatMap((child) => map[child.status](child, depth + 1)).join('\n');
+    return `${buildIndent(depth)}  ${node.key}: {\n${body}\n${buildIndent(depth)}  }`;
+  },
 };
 
 const format = (ast) => {
