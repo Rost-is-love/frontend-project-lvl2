@@ -13,19 +13,7 @@ const buildFilePath = (filepath) => {
 };
 
 const getData = (filepath) => fs.readFileSync(buildFilePath(filepath), 'utf-8');
-const getDataType = (filepath) => {
-  const extension = extname(filepath).slice(1);
-  switch (extension) {
-    case 'json':
-    case '':
-      return 'json';
-    case 'yml':
-    case 'yaml':
-      return 'yml';
-    default:
-      throw new Error('The calculator only works with JSON and yaml formats');
-  }
-};
+const getDataType = (filepath) => extname(filepath).slice(1);
 
 const genDiff = (filepath1, filepath2, format = 'stylish') => {
   const data1 = parseData(getData(filepath1), getDataType(filepath1));
